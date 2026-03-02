@@ -1,10 +1,25 @@
 from datetime import datetime
 from bson import ObjectId
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class User:
     def __init__(self, db):
         self.collection = db.users
+        self._create_indexes()
+    
+    def _create_indexes(self):
+        """Create indexes for optimal query performance"""
+        try:
+            # Index on email for fast lookups
+            self.collection.create_index('email', unique=True)
+            # Compound index for daily limit checks
+            self.collection.create_index([('email', 1), ('is_premium', 1)])
+            logger.info("User collection indexes created successfully")
+        except Exception as e:
+            logger.error(f"Error creating user indexes: {str(e)}")
     
     def create_user(self, name, email, password_hash):
         user_data = {
@@ -37,35 +52,50 @@ class User:
         return None
     
     def increment_summary_count(self, user_id):
-        """Increment the user's summary count for today"""
-        from datetime import datetime
-        user_doc = self.find_by_id(user_id)
-        if not user_doc:
-            return False
+        """Increment the user's summary count for today using atomic operation"""
+        try:
+            from datetime import datetime
+            now = datetime.utcnow()
             
-        # Check if we need to reset the counter (new day)
-        last_reset = user_doc.get('last_summary_reset', datetime.utcnow())
-        if (datetime.utcnow() - last_reset).days >= 1:
-            # Reset the counter
-            self.collection.update_one(
+            # Use atomic findAndModify for race condition safety
+            result = self.collection.find_one_and_update(
                 {'_id': ObjectId(user_id)},
-                {
-                    '$set': {
-                        'summaries_count_today': 1,
-                        'last_summary_reset': datetime.utcnow()
+                [
+                    {
+                        '$set': {
+                            'summaries_count_today': {
+                                '$cond': [
+                                    {
+                                        '$gte': [
+                                            {'$toDate': '$last_summary_reset'},
+                                            {'$dateTrunc': {'date': '$$NOW', 'unit': 'day'}}
+                                        ]
+                                    },
+                                    {'$add': ['$summaries_count_today', 1]},
+                                    1
+                                ]
+                            },
+                            'last_summary_reset': '$$NOW'
+                        }
                     }
-                }
+                ],
+                returnDocument=True
             )
-        else:
-            # Increment the counter
-            self.collection.update_one(
-                {'_id': ObjectId(user_id)},
-                {
-                    '$inc': {'summaries_count_today': 1},
-                    '$set': {'last_summary_reset': datetime.utcnow()}
-                }
-            )
-        return True
+            
+            logger.info(f"User {user_id} summary count incremented")
+            return result is not None
+        except Exception as e:
+            logger.error(f"Error incrementing summary count for user {user_id}: {str(e)}")
+            # Fallback to simple increment
+            try:
+                self.collection.update_one(
+                    {'_id': ObjectId(user_id)},
+                    {'$inc': {'summaries_count_today': 1}}
+                )
+                return True
+            except Exception as fallback_error:
+                logger.error(f"Fallback increment failed: {str(fallback_error)}")
+                return False
     
     def can_create_summary(self, user_id):
         """Check if user can create another summary today"""

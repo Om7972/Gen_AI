@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from werkzeug.utils import secure_filename
 import os
+import time
+import logging
 from config import Config
 from models.summary_model import Summary
 from middleware.jwt_middleware import token_required
@@ -9,10 +11,16 @@ from services.pdf_service import process_pdf_file
 from utils.text_cleaner import sanitize_input, calculate_word_count, calculate_reading_time
 from pymongo import MongoClient
 import tempfile
+from utils.cache import cache_youtube_summary, get_cached_youtube_summary, SummarizationLogger
+from utils.error_handler import handle_error, AppError, ValidationError, NotFoundError, success_response, error_response
+from schemas.validation_schemas import YouTubeSummarySchema, validate_request_data
 
 summary_bp = Blueprint('summary_bp', __name__)
+logger = logging.getLogger(__name__)
+sum_logger = SummarizationLogger(logger)
 
 ALLOWED_EXTENSIONS = {'pdf'}
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -22,34 +30,66 @@ def allowed_file(filename):
 @summary_bp.route('/youtube', methods=['POST'])
 @token_required
 def summarize_youtube(current_user):
+    start_time = time.time()
+    
     try:
-        # Check if user can create another summary
+        # Validate request data
+        data = request.get_json()
+        if not data or 'video_link' not in data:
+            raise ValidationError('YouTube video link is required')
+        
+        validated_data, errors = validate_request_data(data, YouTubeSummarySchema())
+        if errors:
+            raise ValidationError('Validation failed', errors=errors)
+        
+        video_link = sanitize_input(validated_data['video_link'].strip())
+        
+        # Connect to MongoDB
         client = MongoClient(Config.MONGO_URI)
         db = client.pdf_summarizer
-        from models.user_model import User
         user_model = User(db)
+        summary_model = Summary(db)
         
+        # Check if user can create another summary
         if not user_model.can_create_summary(current_user['_id']):
-            return jsonify({'message': 'Daily summary limit reached. Upgrade to premium for unlimited summaries.'}), 429
+            client.close()
+            sum_logger.log_rate_limit_warning(
+                current_user['_id'],
+                user_model.find_by_id(current_user['_id']).get('summaries_count_today', 0),
+                user_model.find_by_id(current_user['_id']).get('daily_limit', 5)
+            )
+            raise AppError(
+                'Daily summary limit reached. Upgrade to premium for unlimited summaries.',
+                status_code=429
+            )
         
-        data = request.get_json()
+        # Extract video ID for caching
+        video_id = summary_model._extract_video_id(video_link)
         
-        if not data or 'video_link' not in data:
-            return jsonify({'message': 'YouTube video link is required!'}), 400
+        # Check cache first
+        if video_id:
+            cached_summary = get_cached_youtube_summary(video_id)
+            if cached_summary:
+                sum_logger.log_cache_hit('youtube', video_id)
+                client.close()
+                return success_response(
+                    data=cached_summary,
+                    message='Summary retrieved from cache',
+                    meta={'cached': True}
+                )
+            sum_logger.log_cache_miss('youtube', video_id)
         
-        video_link = sanitize_input(data.get('video_link', '').strip())
-        
-        if not video_link:
-            return jsonify({'message': 'Video link cannot be empty!'}), 400
+        # Log summarization start
+        sum_logger.log_summarization_start(current_user['_id'], 'youtube', video_link)
         
         # Process the YouTube video
         result = process_youtube_video(video_link)
         
         if 'error' in result:
-            return jsonify({'message': result['error']}), 400
+            client.close()
+            raise AppError(result['error'], status_code=400)
         
         # Create summary record in database
-        summary_model = Summary(db)
         summary_id = summary_model.create_summary(
             user_id=current_user['_id'],
             summary_type='youtube',
@@ -61,18 +101,44 @@ def summarize_youtube(current_user):
         # Increment user's summary count
         user_model.increment_summary_count(current_user['_id'])
         
+        # Cache the result
+        if video_id:
+            summary_data = {
+                'summary': result['summary'],
+                'summary_id': summary_id,
+                'word_count': calculate_word_count(result['summary']),
+                'reading_time': calculate_reading_time(result['summary']),
+                'type': 'youtube'
+            }
+            cache_youtube_summary(video_id, summary_data, timeout=86400)  # 24 hours
+        
         client.close()
         
-        return jsonify({
-            'message': 'Summary generated successfully!',
-            'summary': result['summary'],
-            'summary_id': summary_id,
-            'word_count': calculate_word_count(result['summary']),
-            'reading_time': calculate_reading_time(result['summary'])
-        }), 200
+        # Log completion
+        duration = time.time() - start_time
+        sum_logger.log_summarization_complete(
+            current_user['_id'],
+            'youtube',
+            duration,
+            calculate_word_count(result['summary'])
+        )
         
+        return success_response(
+            data={
+                'summary': result['summary'],
+                'summary_id': summary_id,
+                'word_count': calculate_word_count(result['summary']),
+                'reading_time': calculate_reading_time(result['summary'])
+            },
+            message='Summary generated successfully!',
+            meta={'duration_seconds': round(duration, 2)}
+        )
+        
+    except (ValidationError, AppError) as e:
+        return handle_error(e)
     except Exception as e:
-        return jsonify({'message': f'Error generating YouTube summary: {str(e)}'}), 500
+        sum_logger.log_error('youtube_summarization', e, current_user['_id'])
+        return handle_error(e)
 
 
 @summary_bp.route('/pdf', methods=['POST'])
