@@ -1,0 +1,648 @@
+WEBVTT
+Kind: captions
+Language: en
+
+00:00:00.240 --> 00:00:01.990 align:start position:0%
+ 
+software<00:00:00.880><c> it's</c><00:00:01.120><c> not</c><00:00:01.280><c> like</c><00:00:01.520><c> engineering</c>
+
+00:00:01.990 --> 00:00:02.000 align:start position:0%
+software it's not like engineering
+ 
+
+00:00:02.000 --> 00:00:03.750 align:start position:0%
+software it's not like engineering
+something<00:00:02.320><c> easy</c><00:00:02.720><c> like</c><00:00:02.960><c> a</c><00:00:03.040><c> bridge</c><00:00:03.439><c> where</c><00:00:03.600><c> you</c>
+
+00:00:03.750 --> 00:00:03.760 align:start position:0%
+something easy like a bridge where you
+ 
+
+00:00:03.760 --> 00:00:04.789 align:start position:0%
+something easy like a bridge where you
+start<00:00:04.000><c> with</c><00:00:04.080><c> a</c><00:00:04.160><c> blueprint</c>
+
+00:00:04.789 --> 00:00:04.799 align:start position:0%
+start with a blueprint
+ 
+
+00:00:04.799 --> 00:00:06.710 align:start position:0%
+start with a blueprint
+build<00:00:05.040><c> it</c><00:00:05.120><c> to</c><00:00:05.279><c> spec</c><00:00:05.680><c> then</c><00:00:05.839><c> forget</c><00:00:06.160><c> about</c><00:00:06.480><c> it</c>
+
+00:00:06.710 --> 00:00:06.720 align:start position:0%
+build it to spec then forget about it
+ 
+
+00:00:06.720 --> 00:00:08.790 align:start position:0%
+build it to spec then forget about it
+software<00:00:07.200><c> is</c><00:00:07.359><c> dynamic</c><00:00:07.919><c> with</c><00:00:08.080><c> a</c><00:00:08.160><c> lot</c><00:00:08.320><c> of</c><00:00:08.480><c> moving</c>
+
+00:00:08.790 --> 00:00:08.800 align:start position:0%
+software is dynamic with a lot of moving
+ 
+
+00:00:08.800 --> 00:00:10.709 align:start position:0%
+software is dynamic with a lot of moving
+parts<00:00:09.200><c> and</c><00:00:09.360><c> requirements</c><00:00:09.920><c> that</c><00:00:10.080><c> evolve</c><00:00:10.480><c> over</c>
+
+00:00:10.709 --> 00:00:10.719 align:start position:0%
+parts and requirements that evolve over
+ 
+
+00:00:10.719 --> 00:00:11.110 align:start position:0%
+parts and requirements that evolve over
+time
+
+00:00:11.110 --> 00:00:11.120 align:start position:0%
+time
+ 
+
+00:00:11.120 --> 00:00:12.870 align:start position:0%
+time
+developers<00:00:11.599><c> build</c><00:00:11.840><c> apps</c><00:00:12.240><c> on</c><00:00:12.400><c> top</c><00:00:12.559><c> of</c><00:00:12.719><c> a</c>
+
+00:00:12.870 --> 00:00:12.880 align:start position:0%
+developers build apps on top of a
+ 
+
+00:00:12.880 --> 00:00:14.789 align:start position:0%
+developers build apps on top of a
+mountain<00:00:13.200><c> of</c><00:00:13.360><c> abstractions</c><00:00:14.240><c> and</c><00:00:14.400><c> nobody</c>
+
+00:00:14.789 --> 00:00:14.799 align:start position:0%
+mountain of abstractions and nobody
+ 
+
+00:00:14.799 --> 00:00:16.870 align:start position:0%
+mountain of abstractions and nobody
+fully<00:00:15.120><c> understands</c><00:00:15.679><c> how</c><00:00:15.920><c> every</c><00:00:16.160><c> layer</c><00:00:16.480><c> works</c>
+
+00:00:16.870 --> 00:00:16.880 align:start position:0%
+fully understands how every layer works
+ 
+
+00:00:16.880 --> 00:00:18.550 align:start position:0%
+fully understands how every layer works
+that's<00:00:17.119><c> okay</c><00:00:17.600><c> because</c><00:00:17.840><c> we</c><00:00:18.000><c> just</c><00:00:18.160><c> need</c><00:00:18.320><c> to</c><00:00:18.400><c> make</c>
+
+00:00:18.550 --> 00:00:18.560 align:start position:0%
+that's okay because we just need to make
+ 
+
+00:00:18.560 --> 00:00:19.910 align:start position:0%
+that's okay because we just need to make
+sure<00:00:18.720><c> that</c><00:00:18.960><c> our</c><00:00:19.039><c> code</c><00:00:19.439><c> matches</c><00:00:19.760><c> the</c>
+
+00:00:19.910 --> 00:00:19.920 align:start position:0%
+sure that our code matches the
+ 
+
+00:00:19.920 --> 00:00:21.670 align:start position:0%
+sure that our code matches the
+requirements<00:00:20.560><c> of</c><00:00:20.640><c> the</c><00:00:20.800><c> product</c><00:00:21.199><c> test</c><00:00:21.439><c> driven</c>
+
+00:00:21.670 --> 00:00:21.680 align:start position:0%
+requirements of the product test driven
+ 
+
+00:00:21.680 --> 00:00:23.590 align:start position:0%
+requirements of the product test driven
+development<00:00:22.240><c> is</c><00:00:22.400><c> scientifically</c><00:00:23.039><c> proven</c><00:00:23.439><c> to</c>
+
+00:00:23.590 --> 00:00:23.600 align:start position:0%
+development is scientifically proven to
+ 
+
+00:00:23.600 --> 00:00:25.029 align:start position:0%
+development is scientifically proven to
+reduce<00:00:24.000><c> defects</c><00:00:24.480><c> and</c><00:00:24.640><c> improve</c><00:00:24.960><c> the</c>
+
+00:00:25.029 --> 00:00:25.039 align:start position:0%
+reduce defects and improve the
+ 
+
+00:00:25.039 --> 00:00:26.950 align:start position:0%
+reduce defects and improve the
+maintainability<00:00:25.840><c> of</c><00:00:26.000><c> a</c><00:00:26.080><c> code</c><00:00:26.320><c> base</c><00:00:26.640><c> but</c><00:00:26.880><c> it</c>
+
+00:00:26.950 --> 00:00:26.960 align:start position:0%
+maintainability of a code base but it
+ 
+
+00:00:26.960 --> 00:00:28.790 align:start position:0%
+maintainability of a code base but it
+does<00:00:27.119><c> require</c><00:00:27.599><c> some</c><00:00:27.840><c> additional</c><00:00:28.320><c> effort</c>
+
+00:00:28.790 --> 00:00:28.800 align:start position:0%
+does require some additional effort
+ 
+
+00:00:28.800 --> 00:00:30.950 align:start position:0%
+does require some additional effort
+one<00:00:29.039><c> option</c><00:00:29.439><c> is</c><00:00:29.679><c> manual</c><00:00:30.080><c> testing</c><00:00:30.640><c> where</c><00:00:30.800><c> a</c>
+
+00:00:30.950 --> 00:00:30.960 align:start position:0%
+one option is manual testing where a
+ 
+
+00:00:30.960 --> 00:00:32.790 align:start position:0%
+one option is manual testing where a
+human<00:00:31.279><c> being</c><00:00:31.599><c> clicks</c><00:00:31.920><c> on</c><00:00:32.079><c> every</c><00:00:32.239><c> button</c><00:00:32.640><c> and</c>
+
+00:00:32.790 --> 00:00:32.800 align:start position:0%
+human being clicks on every button and
+ 
+
+00:00:32.800 --> 00:00:34.389 align:start position:0%
+human being clicks on every button and
+fills<00:00:33.120><c> out</c><00:00:33.280><c> every</c><00:00:33.520><c> form</c><00:00:33.760><c> then</c><00:00:34.000><c> assigns</c><00:00:34.320><c> a</c>
+
+00:00:34.389 --> 00:00:34.399 align:start position:0%
+fills out every form then assigns a
+ 
+
+00:00:34.399 --> 00:00:35.910 align:start position:0%
+fills out every form then assigns a
+bunch<00:00:34.640><c> of</c><00:00:34.719><c> jira</c><00:00:35.040><c> tickets</c><00:00:35.360><c> so</c><00:00:35.520><c> they</c><00:00:35.600><c> can</c><00:00:35.760><c> be</c>
+
+00:00:35.910 --> 00:00:35.920 align:start position:0%
+bunch of jira tickets so they can be
+ 
+
+00:00:35.920 --> 00:00:37.430 align:start position:0%
+bunch of jira tickets so they can be
+backlogged<00:00:36.399><c> by</c><00:00:36.559><c> the</c><00:00:36.640><c> developers</c>
+
+00:00:37.430 --> 00:00:37.440 align:start position:0%
+backlogged by the developers
+ 
+
+00:00:37.440 --> 00:00:38.950 align:start position:0%
+backlogged by the developers
+but<00:00:37.600><c> that's</c><00:00:37.840><c> not</c><00:00:38.000><c> very</c><00:00:38.239><c> efficient</c><00:00:38.640><c> for</c><00:00:38.879><c> a</c>
+
+00:00:38.950 --> 00:00:38.960 align:start position:0%
+but that's not very efficient for a
+ 
+
+00:00:38.960 --> 00:00:41.030 align:start position:0%
+but that's not very efficient for a
+large<00:00:39.200><c> scale</c><00:00:39.600><c> product</c><00:00:40.000><c> a</c><00:00:40.160><c> better</c><00:00:40.480><c> approach</c><00:00:40.879><c> is</c>
+
+00:00:41.030 --> 00:00:41.040 align:start position:0%
+large scale product a better approach is
+ 
+
+00:00:41.040 --> 00:00:42.709 align:start position:0%
+large scale product a better approach is
+to<00:00:41.120><c> use</c><00:00:41.360><c> automated</c><00:00:41.760><c> testing</c><00:00:42.160><c> tools</c><00:00:42.559><c> that</c>
+
+00:00:42.709 --> 00:00:42.719 align:start position:0%
+to use automated testing tools that
+ 
+
+00:00:42.719 --> 00:00:44.549 align:start position:0%
+to use automated testing tools that
+allow<00:00:43.040><c> developers</c><00:00:43.520><c> to</c><00:00:43.680><c> write</c><00:00:43.920><c> code</c><00:00:44.239><c> for</c><00:00:44.399><c> the</c>
+
+00:00:44.549 --> 00:00:44.559 align:start position:0%
+allow developers to write code for the
+ 
+
+00:00:44.559 --> 00:00:46.310 align:start position:0%
+allow developers to write code for the
+sole<00:00:44.800><c> purpose</c><00:00:45.280><c> of</c><00:00:45.440><c> testing</c><00:00:45.920><c> the</c><00:00:46.000><c> main</c>
+
+00:00:46.310 --> 00:00:46.320 align:start position:0%
+sole purpose of testing the main
+ 
+
+00:00:46.320 --> 00:00:48.229 align:start position:0%
+sole purpose of testing the main
+application<00:00:46.960><c> code</c><00:00:47.280><c> in</c><00:00:47.440><c> a</c><00:00:47.520><c> code</c><00:00:47.760><c> base</c><00:00:48.000><c> you'll</c>
+
+00:00:48.229 --> 00:00:48.239 align:start position:0%
+application code in a code base you'll
+ 
+
+00:00:48.239 --> 00:00:49.910 align:start position:0%
+application code in a code base you'll
+often<00:00:48.480><c> find</c><00:00:48.719><c> files</c><00:00:49.120><c> that</c><00:00:49.280><c> end</c><00:00:49.520><c> in</c>
+
+00:00:49.910 --> 00:00:49.920 align:start position:0%
+often find files that end in
+ 
+
+00:00:49.920 --> 00:00:52.310 align:start position:0%
+often find files that end in
+test<00:00:50.320><c> or</c><00:00:50.480><c> dot</c><00:00:50.719><c> spec</c><00:00:51.280><c> inside</c><00:00:51.840><c> you'll</c><00:00:52.079><c> first</c>
+
+00:00:52.310 --> 00:00:52.320 align:start position:0%
+test or dot spec inside you'll first
+ 
+
+00:00:52.320 --> 00:00:54.150 align:start position:0%
+test or dot spec inside you'll first
+find<00:00:52.559><c> a</c><00:00:52.640><c> line</c><00:00:52.879><c> of</c><00:00:52.960><c> code</c><00:00:53.280><c> that</c><00:00:53.520><c> describes</c><00:00:54.000><c> the</c>
+
+00:00:54.150 --> 00:00:54.160 align:start position:0%
+find a line of code that describes the
+ 
+
+00:00:54.160 --> 00:00:56.069 align:start position:0%
+find a line of code that describes the
+feature<00:00:54.559><c> or</c><00:00:54.879><c> thing</c><00:00:55.120><c> that's</c><00:00:55.360><c> being</c><00:00:55.600><c> tested</c>
+
+00:00:56.069 --> 00:00:56.079 align:start position:0%
+feature or thing that's being tested
+ 
+
+00:00:56.079 --> 00:00:57.830 align:start position:0%
+feature or thing that's being tested
+that's<00:00:56.320><c> known</c><00:00:56.640><c> as</c><00:00:56.800><c> a</c><00:00:56.879><c> test</c><00:00:57.120><c> suite</c><00:00:57.600><c> and</c><00:00:57.760><c> it</c>
+
+00:00:57.830 --> 00:00:57.840 align:start position:0%
+that's known as a test suite and it
+ 
+
+00:00:57.840 --> 00:01:00.150 align:start position:0%
+that's known as a test suite and it
+contains<00:00:58.239><c> one</c><00:00:58.480><c> or</c><00:00:58.559><c> more</c><00:00:58.879><c> individual</c><00:00:59.520><c> tests</c>
+
+00:01:00.150 --> 00:01:00.160 align:start position:0%
+contains one or more individual tests
+ 
+
+00:01:00.160 --> 00:01:02.150 align:start position:0%
+contains one or more individual tests
+an<00:01:00.320><c> individual</c><00:01:00.879><c> test</c><00:01:01.280><c> usually</c><00:01:01.600><c> starts</c><00:01:01.840><c> with</c>
+
+00:01:02.150 --> 00:01:02.160 align:start position:0%
+an individual test usually starts with
+ 
+
+00:01:02.160 --> 00:01:03.910 align:start position:0%
+an individual test usually starts with
+it<00:01:02.480><c> followed</c><00:01:02.800><c> by</c><00:01:03.039><c> a</c><00:01:03.199><c> description</c>
+
+00:01:03.910 --> 00:01:03.920 align:start position:0%
+it followed by a description
+ 
+
+00:01:03.920 --> 00:01:06.149 align:start position:0%
+it followed by a description
+of<00:01:04.080><c> what</c><00:01:04.320><c> is</c><00:01:04.400><c> being</c><00:01:04.640><c> tested</c><00:01:05.199><c> the</c><00:01:05.439><c> idea</c><00:01:05.840><c> is</c><00:01:06.000><c> to</c>
+
+00:01:06.149 --> 00:01:06.159 align:start position:0%
+of what is being tested the idea is to
+ 
+
+00:01:06.159 --> 00:01:07.830 align:start position:0%
+of what is being tested the idea is to
+describe<00:01:06.479><c> the</c><00:01:06.640><c> behavior</c><00:01:07.040><c> of</c><00:01:07.200><c> the</c><00:01:07.280><c> code</c><00:01:07.680><c> in</c>
+
+00:01:07.830 --> 00:01:07.840 align:start position:0%
+describe the behavior of the code in
+ 
+
+00:01:07.840 --> 00:01:09.190 align:start position:0%
+describe the behavior of the code in
+human<00:01:08.240><c> readable</c><00:01:08.640><c> terms</c>
+
+00:01:09.190 --> 00:01:09.200 align:start position:0%
+human readable terms
+ 
+
+00:01:09.200 --> 00:01:10.710 align:start position:0%
+human readable terms
+inside<00:01:09.520><c> the</c><00:01:09.680><c> test</c><00:01:10.000><c> the</c><00:01:10.159><c> code</c><00:01:10.400><c> will</c><00:01:10.560><c> be</c>
+
+00:01:10.710 --> 00:01:10.720 align:start position:0%
+inside the test the code will be
+ 
+
+00:01:10.720 --> 00:01:12.390 align:start position:0%
+inside the test the code will be
+executed<00:01:11.520><c> then</c><00:01:11.760><c> one</c><00:01:12.000><c> or</c><00:01:12.080><c> more</c>
+
+00:01:12.390 --> 00:01:12.400 align:start position:0%
+executed then one or more
+ 
+
+00:01:12.400 --> 00:01:14.710 align:start position:0%
+executed then one or more
+expectations<00:01:13.200><c> or</c><00:01:13.439><c> assertions</c><00:01:14.080><c> are</c><00:01:14.240><c> used</c><00:01:14.479><c> to</c>
+
+00:01:14.710 --> 00:01:14.720 align:start position:0%
+expectations or assertions are used to
+ 
+
+00:01:14.720 --> 00:01:16.230 align:start position:0%
+expectations or assertions are used to
+check<00:01:14.880><c> that</c><00:01:15.040><c> the</c><00:01:15.200><c> code</c><00:01:15.520><c> produces</c><00:01:16.080><c> the</c>
+
+00:01:16.230 --> 00:01:16.240 align:start position:0%
+check that the code produces the
+ 
+
+00:01:16.240 --> 00:01:18.070 align:start position:0%
+check that the code produces the
+expected<00:01:16.640><c> result</c><00:01:17.119><c> if</c><00:01:17.280><c> the</c><00:01:17.439><c> expectation</c>
+
+00:01:18.070 --> 00:01:18.080 align:start position:0%
+expected result if the expectation
+ 
+
+00:01:18.080 --> 00:01:19.990 align:start position:0%
+expected result if the expectation
+returns<00:01:18.479><c> false</c><00:01:18.799><c> then</c><00:01:19.040><c> the</c><00:01:19.119><c> test</c><00:01:19.439><c> fails</c>
+
+00:01:19.990 --> 00:01:20.000 align:start position:0%
+returns false then the test fails
+ 
+
+00:01:20.000 --> 00:01:22.550 align:start position:0%
+returns false then the test fails
+if<00:01:20.159><c> it's</c><00:01:20.320><c> true</c><00:01:20.799><c> it</c><00:01:20.960><c> passes</c><00:01:21.600><c> test</c><00:01:21.920><c> runners</c><00:01:22.320><c> like</c>
+
+00:01:22.550 --> 00:01:22.560 align:start position:0%
+if it's true it passes test runners like
+ 
+
+00:01:22.560 --> 00:01:23.590 align:start position:0%
+if it's true it passes test runners like
+jest<00:01:22.880><c> or</c><00:01:23.040><c> karma</c>
+
+00:01:23.590 --> 00:01:23.600 align:start position:0%
+jest or karma
+ 
+
+00:01:23.600 --> 00:01:25.270 align:start position:0%
+jest or karma
+can<00:01:23.759><c> run</c><00:01:24.000><c> all</c><00:01:24.080><c> your</c><00:01:24.240><c> tests</c><00:01:24.560><c> automatically</c><00:01:25.200><c> in</c>
+
+00:01:25.270 --> 00:01:25.280 align:start position:0%
+can run all your tests automatically in
+ 
+
+00:01:25.280 --> 00:01:26.870 align:start position:0%
+can run all your tests automatically in
+the<00:01:25.360><c> background</c><00:01:26.000><c> or</c><00:01:26.159><c> on</c><00:01:26.240><c> a</c><00:01:26.320><c> continuous</c>
+
+00:01:26.870 --> 00:01:26.880 align:start position:0%
+the background or on a continuous
+ 
+
+00:01:26.880 --> 00:01:28.870 align:start position:0%
+the background or on a continuous
+integration<00:01:27.439><c> server</c><00:01:27.759><c> before</c><00:01:28.080><c> you</c><00:01:28.159><c> deploy</c>
+
+00:01:28.870 --> 00:01:28.880 align:start position:0%
+integration server before you deploy
+ 
+
+00:01:28.880 --> 00:01:30.630 align:start position:0%
+integration server before you deploy
+now<00:01:29.119><c> there</c><00:01:29.439><c> are</c><00:01:29.600><c> many</c><00:01:29.759><c> different</c><00:01:30.159><c> automated</c>
+
+00:01:30.630 --> 00:01:30.640 align:start position:0%
+now there are many different automated
+ 
+
+00:01:30.640 --> 00:01:31.990 align:start position:0%
+now there are many different automated
+testing<00:01:31.040><c> strategies</c><00:01:31.520><c> that</c><00:01:31.600><c> you</c><00:01:31.680><c> should</c><00:01:31.840><c> be</c>
+
+00:01:31.990 --> 00:01:32.000 align:start position:0%
+testing strategies that you should be
+ 
+
+00:01:32.000 --> 00:01:32.630 align:start position:0%
+testing strategies that you should be
+aware<00:01:32.320><c> of</c>
+
+00:01:32.630 --> 00:01:32.640 align:start position:0%
+aware of
+ 
+
+00:01:32.640 --> 00:01:34.469 align:start position:0%
+aware of
+at<00:01:32.720><c> the</c><00:01:32.799><c> most</c><00:01:33.040><c> granular</c><00:01:33.520><c> level</c><00:01:33.840><c> we</c><00:01:34.000><c> have</c><00:01:34.159><c> unit</c>
+
+00:01:34.469 --> 00:01:34.479 align:start position:0%
+at the most granular level we have unit
+ 
+
+00:01:34.479 --> 00:01:36.149 align:start position:0%
+at the most granular level we have unit
+testing<00:01:34.960><c> which</c><00:01:35.119><c> is</c><00:01:35.280><c> designed</c><00:01:35.680><c> to</c><00:01:35.840><c> test</c>
+
+00:01:36.149 --> 00:01:36.159 align:start position:0%
+testing which is designed to test
+ 
+
+00:01:36.159 --> 00:01:37.749 align:start position:0%
+testing which is designed to test
+individual<00:01:36.640><c> functions</c><00:01:37.040><c> or</c><00:01:37.280><c> methods</c>
+
+00:01:37.749 --> 00:01:37.759 align:start position:0%
+individual functions or methods
+ 
+
+00:01:37.759 --> 00:01:39.109 align:start position:0%
+individual functions or methods
+like<00:01:38.000><c> does</c><00:01:38.240><c> this</c><00:01:38.400><c> function</c><00:01:38.720><c> return</c><00:01:38.960><c> the</c>
+
+00:01:39.109 --> 00:01:39.119 align:start position:0%
+like does this function return the
+ 
+
+00:01:39.119 --> 00:01:41.109 align:start position:0%
+like does this function return the
+proper<00:01:39.439><c> value</c><00:01:39.840><c> when</c><00:01:40.000><c> given</c><00:01:40.240><c> the</c><00:01:40.400><c> arguments</c><00:01:40.960><c> of</c>
+
+00:01:41.109 --> 00:01:41.119 align:start position:0%
+proper value when given the arguments of
+ 
+
+00:01:41.119 --> 00:01:41.350 align:start position:0%
+proper value when given the arguments of
+a
+
+00:01:41.350 --> 00:01:41.360 align:start position:0%
+a
+ 
+
+00:01:41.360 --> 00:01:43.429 align:start position:0%
+a
+and<00:01:41.439><c> b</c><00:01:41.840><c> then</c><00:01:42.000><c> we</c><00:01:42.079><c> have</c><00:01:42.320><c> integration</c><00:01:42.880><c> testing</c>
+
+00:01:43.429 --> 00:01:43.439 align:start position:0%
+and b then we have integration testing
+ 
+
+00:01:43.439 --> 00:01:44.710 align:start position:0%
+and b then we have integration testing
+to<00:01:43.600><c> determine</c><00:01:44.000><c> how</c><00:01:44.240><c> well</c><00:01:44.479><c> different</c>
+
+00:01:44.710 --> 00:01:44.720 align:start position:0%
+to determine how well different
+ 
+
+00:01:44.720 --> 00:01:46.870 align:start position:0%
+to determine how well different
+components<00:01:45.280><c> or</c><00:01:45.520><c> modules</c><00:01:46.000><c> work</c><00:01:46.240><c> together</c><00:01:46.640><c> like</c>
+
+00:01:46.870 --> 00:01:46.880 align:start position:0%
+components or modules work together like
+ 
+
+00:01:46.880 --> 00:01:47.749 align:start position:0%
+components or modules work together like
+is<00:01:47.040><c> the</c><00:01:47.200><c> component</c>
+
+00:01:47.749 --> 00:01:47.759 align:start position:0%
+is the component
+ 
+
+00:01:47.759 --> 00:01:49.510 align:start position:0%
+is the component
+able<00:01:48.000><c> to</c><00:01:48.079><c> use</c><00:01:48.240><c> the</c><00:01:48.320><c> database</c><00:01:48.799><c> service</c><00:01:49.119><c> to</c><00:01:49.360><c> get</c>
+
+00:01:49.510 --> 00:01:49.520 align:start position:0%
+able to use the database service to get
+ 
+
+00:01:49.520 --> 00:01:51.190 align:start position:0%
+able to use the database service to get
+data<00:01:49.840><c> from</c><00:01:50.000><c> the</c><00:01:50.079><c> server</c><00:01:50.640><c> at</c><00:01:50.720><c> the</c><00:01:50.880><c> highest</c>
+
+00:01:51.190 --> 00:01:51.200 align:start position:0%
+data from the server at the highest
+ 
+
+00:01:51.200 --> 00:01:53.030 align:start position:0%
+data from the server at the highest
+level<00:01:51.520><c> we</c><00:01:51.680><c> have</c><00:01:51.840><c> end-to-end</c><00:01:52.240><c> testing</c><00:01:52.799><c> which</c>
+
+00:01:53.030 --> 00:01:53.040 align:start position:0%
+level we have end-to-end testing which
+ 
+
+00:01:53.040 --> 00:01:54.870 align:start position:0%
+level we have end-to-end testing which
+usually<00:01:53.360><c> happens</c><00:01:53.680><c> in</c><00:01:53.840><c> a</c><00:01:53.920><c> mock</c><00:01:54.240><c> browser</c><00:01:54.720><c> or</c>
+
+00:01:54.870 --> 00:01:54.880 align:start position:0%
+usually happens in a mock browser or
+ 
+
+00:01:54.880 --> 00:01:55.429 align:start position:0%
+usually happens in a mock browser or
+device
+
+00:01:55.429 --> 00:01:55.439 align:start position:0%
+device
+ 
+
+00:01:55.439 --> 00:01:57.670 align:start position:0%
+device
+and<00:01:55.600><c> simulates</c><00:01:56.240><c> actual</c><00:01:56.560><c> user</c><00:01:56.880><c> behaviors</c><00:01:57.439><c> like</c>
+
+00:01:57.670 --> 00:01:57.680 align:start position:0%
+and simulates actual user behaviors like
+ 
+
+00:01:57.680 --> 00:01:59.190 align:start position:0%
+and simulates actual user behaviors like
+clicking<00:01:58.000><c> on</c><00:01:58.159><c> buttons</c><00:01:58.560><c> and</c><00:01:58.719><c> filling</c><00:01:59.040><c> out</c>
+
+00:01:59.190 --> 00:01:59.200 align:start position:0%
+clicking on buttons and filling out
+ 
+
+00:01:59.200 --> 00:01:59.670 align:start position:0%
+clicking on buttons and filling out
+forms
+
+00:01:59.670 --> 00:01:59.680 align:start position:0%
+forms
+ 
+
+00:01:59.680 --> 00:02:01.510 align:start position:0%
+forms
+it's<00:01:59.840><c> like</c><00:02:00.000><c> having</c><00:02:00.320><c> a</c><00:02:00.479><c> robot</c><00:02:00.880><c> to</c><00:02:01.040><c> do</c><00:02:01.280><c> all</c><00:02:01.360><c> your</c>
+
+00:02:01.510 --> 00:02:01.520 align:start position:0%
+it's like having a robot to do all your
+ 
+
+00:02:01.520 --> 00:02:02.789 align:start position:0%
+it's like having a robot to do all your
+manual<00:02:01.920><c> testing</c><00:02:02.320><c> for</c><00:02:02.479><c> you</c>
+
+00:02:02.789 --> 00:02:02.799 align:start position:0%
+manual testing for you
+ 
+
+00:02:02.799 --> 00:02:04.469 align:start position:0%
+manual testing for you
+and<00:02:02.960><c> that's</c><00:02:03.200><c> not</c><00:02:03.360><c> all</c><00:02:03.680><c> there</c><00:02:03.840><c> are</c><00:02:03.920><c> many</c><00:02:04.240><c> other</c>
+
+00:02:04.469 --> 00:02:04.479 align:start position:0%
+and that's not all there are many other
+ 
+
+00:02:04.479 --> 00:02:06.630 align:start position:0%
+and that's not all there are many other
+types<00:02:04.799><c> like</c><00:02:05.040><c> performance</c><00:02:05.680><c> and</c><00:02:05.840><c> smoke</c><00:02:06.159><c> testing</c>
+
+00:02:06.630 --> 00:02:06.640 align:start position:0%
+types like performance and smoke testing
+ 
+
+00:02:06.640 --> 00:02:07.590 align:start position:0%
+types like performance and smoke testing
+which<00:02:06.880><c> i'll</c><00:02:07.040><c> explain</c>
+
+00:02:07.590 --> 00:02:07.600 align:start position:0%
+which i'll explain
+ 
+
+00:02:07.600 --> 00:02:09.510 align:start position:0%
+which i'll explain
+in<00:02:07.680><c> my</c><00:02:07.920><c> upcoming</c><00:02:08.479><c> test</c><00:02:08.720><c> driven</c><00:02:09.039><c> development</c>
+
+00:02:09.510 --> 00:02:09.520 align:start position:0%
+in my upcoming test driven development
+ 
+
+00:02:09.520 --> 00:02:10.790 align:start position:0%
+in my upcoming test driven development
+breakdown<00:02:10.000><c> hit</c><00:02:10.160><c> the</c><00:02:10.239><c> like</c><00:02:10.399><c> button</c><00:02:10.640><c> if</c><00:02:10.720><c> you</c>
+
+00:02:10.790 --> 00:02:10.800 align:start position:0%
+breakdown hit the like button if you
+ 
+
+00:02:10.800 --> 00:02:12.390 align:start position:0%
+breakdown hit the like button if you
+want<00:02:10.879><c> to</c><00:02:10.959><c> see</c><00:02:11.120><c> more</c><00:02:11.280><c> short</c><00:02:11.520><c> videos</c><00:02:11.840><c> like</c><00:02:12.000><c> this</c>
+
+00:02:12.390 --> 00:02:12.400 align:start position:0%
+want to see more short videos like this
+ 
+
+00:02:12.400 --> 00:02:14.309 align:start position:0%
+want to see more short videos like this
+thanks<00:02:12.640><c> for</c><00:02:12.800><c> watching</c><00:02:13.360><c> and</c><00:02:13.599><c> i</c><00:02:13.680><c> will</c><00:02:13.920><c> see</c><00:02:14.160><c> you</c>
+
+00:02:14.309 --> 00:02:14.319 align:start position:0%
+thanks for watching and i will see you
+ 
+
+00:02:14.319 --> 00:02:17.440 align:start position:0%
+thanks for watching and i will see you
+in<00:02:14.480><c> the</c><00:02:14.560><c> next</c><00:02:14.800><c> one</c>
+

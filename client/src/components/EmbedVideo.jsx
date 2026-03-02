@@ -5,7 +5,7 @@ function EmbedVideo() {
     <iframe
       id="embed"
       className="w-full aspect-video"
-      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+      src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0"
       title="YouTube video player"
       frameBorder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
