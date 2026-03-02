@@ -8,7 +8,7 @@ import Navbar from './components/Navbar';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
+import DashboardEnhanced from './pages/DashboardEnhanced';
 import History from './pages/History';
 
 import './App.css';
@@ -50,7 +50,7 @@ function AppContent() {
         } />
         <Route path="/dashboard" element={
           <ProtectedRoute>
-            <Dashboard />
+            <DashboardEnhanced />
           </ProtectedRoute>
         } />
         <Route path="/history" element={
