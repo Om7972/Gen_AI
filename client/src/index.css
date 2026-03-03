@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300;
+    @apply bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-indigo-950 dark:via-gray-900 dark:to-purple-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen;
   }
 
   /* Custom scrollbar */
@@ -29,11 +29,11 @@
 @layer components {
   /* Glassmorphism card */
   .glass-card {
-    @apply backdrop-blur-xl bg-white/70 dark:bg-gray-800/50 border border-white/20 dark:border-gray-700/50 shadow-lg;
+    @apply backdrop-blur-md bg-white/10 dark:bg-gray-800/30 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl;
   }
 
   .glass-card-hover {
-    @apply glass-card hover:shadow-2xl hover:scale-[1.02] transition-all duration-300;
+    @apply glass-card hover:shadow-xl hover:scale-[1.02] transition-all duration-300;
   }
 
   /* Gradient button */

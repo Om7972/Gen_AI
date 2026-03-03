@@ -54,6 +54,17 @@ const EnhancedSummaryDisplay = ({ summary, type, onRegenerate, loading }) => {
   const isLongSummary = paragraphs.length > 3;
   const displayedParagraphs = expanded ? paragraphs : paragraphs.slice(0, 3);
 
+  const formatText = (text) => {
+    // Basic bold parsing: **text**
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={i} className="text-gray-900 dark:text-white font-bold bg-primary-50 dark:bg-primary-900/20 px-1 rounded">{part.slice(2, -2)}</strong>;
+      }
+      return part;
+    });
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header with Stats */}
@@ -61,11 +72,10 @@ const EnhancedSummaryDisplay = ({ summary, type, onRegenerate, loading }) => {
         <div className="flex flex-wrap items-center justify-between gap-4">
           {/* Type Badge */}
           <div className="flex items-center space-x-3">
-            <span className={`px-4 py-2 rounded-full text-sm font-bold shadow-lg ${
-              type === 'youtube'
+            <span className={`px-4 py-2 rounded-full text-sm font-bold shadow-lg ${type === 'youtube'
                 ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
                 : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-            }`}>
+              }`}>
               {type === 'youtube' ? '▶ YouTube' : '📄 PDF'}
             </span>
             <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
@@ -99,11 +109,31 @@ const EnhancedSummaryDisplay = ({ summary, type, onRegenerate, loading }) => {
           </h3>
 
           <div className="text-gray-700 dark:text-gray-300 leading-relaxed space-y-4">
-            {displayedParagraphs.map((paragraph, index) => (
-              <p key={index} className="transition-colors hover:text-gray-900 dark:hover:text-white">
-                {paragraph}
-              </p>
-            ))}
+            {displayedParagraphs.map((paragraph, index) => {
+              const isBullet = /^[\-\*]\s/.test(paragraph);
+              const isNumbered = /^\d+\.\s/.test(paragraph);
+              if (isBullet || isNumbered) {
+                return (
+                  <div key={index} className="flex items-start bg-gradient-to-r from-primary-50 to-transparent dark:from-primary-900/10 dark:to-transparent p-4 rounded-xl border-l-4 border-primary-500 shadow-sm transition-all hover:shadow-md">
+                    <div className="mr-3 text-primary-500 mt-0.5">
+                      {isBullet ? (
+                        <div className="w-2 h-2 rounded-full bg-primary-500 mt-1.5" />
+                      ) : (
+                        <span className="font-bold text-xs bg-primary-100 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 px-2 py-1 rounded-full">{paragraph.match(/^\d+/)?.[0]}</span>
+                      )}
+                    </div>
+                    <p className="flex-1 transition-colors hover:text-gray-900 dark:hover:text-white">
+                      {formatText(paragraph.replace(/^[\-\*]\s|^\d+\.\s/, ''))}
+                    </p>
+                  </div>
+                );
+              }
+              return (
+                <p key={index} className="transition-colors hover:text-gray-900 dark:hover:text-white text-lg">
+                  {formatText(paragraph)}
+                </p>
+              );
+            })}
           </div>
 
           {/* Expand/Collapse Button */}
@@ -138,11 +168,10 @@ const EnhancedSummaryDisplay = ({ summary, type, onRegenerate, loading }) => {
         <button
           onClick={handleCopy}
           disabled={loading}
-          className={`relative overflow-hidden group px-6 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-[1.02] ${
-            copied
+          className={`relative overflow-hidden group px-6 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-[1.02] ${copied
               ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg'
               : 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg'
-          }`}
+            }`}
         >
           <span className="flex items-center justify-center space-x-2">
             {copied ? (
@@ -180,11 +209,10 @@ const EnhancedSummaryDisplay = ({ summary, type, onRegenerate, loading }) => {
         <button
           onClick={handleRegenerate}
           disabled={loading}
-          className={`px-6 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-[1.02] ${
-            loading
+          className={`px-6 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-[1.02] ${loading
               ? 'bg-gray-400 cursor-not-allowed'
               : 'bg-gradient-to-r from-primary-600 via-purple-600 to-secondary-600 text-white shadow-lg hover:shadow-xl'
-          }`}
+            }`}
         >
           <span className="flex items-center justify-center space-x-2">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
