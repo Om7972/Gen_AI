@@ -3,8 +3,7 @@ os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 import sys
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+from utils.limiter import limiter
 import jwt
 from datetime import datetime, timedelta
 from config import Config
@@ -29,18 +28,12 @@ def create_app():
     # Initialize cache manager
     cache_manager.init_app(app)
     
-    # Enable CORS for all routes
-    CORS(app)
+    # Enable CORS for all routes safely
+    CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
     
     # Initialize rate limiter
     if Config.RATE_LIMIT_ENABLED:
-        limiter = Limiter(
-            key_func=get_remote_address,
-            app=app,
-            default_limits=[Config.RATE_LIMIT_DEFAULT],
-            storage_uri=Config.RATE_LIMIT_STORAGE_URL,
-            strategy="fixed-window"
-        )
+        limiter.init_app(app)
         logger.info(f"Rate limiting enabled: {Config.RATE_LIMIT_DEFAULT}")
     else:
         logger.warning("Rate limiting disabled")

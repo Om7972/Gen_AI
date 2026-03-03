@@ -6,6 +6,7 @@ from config import Config
 from models.user_model import User
 from pymongo import MongoClient
 from utils.text_cleaner import sanitize_input
+from utils.error_handler import handle_error, AppError, ValidationError, NotFoundError, UnauthorizedError, success_response
 
 auth_bp = Blueprint('auth_bp', __name__)
 
@@ -17,7 +18,7 @@ def register():
         
         # Validate required fields
         if not data or not all(k in data for k in ('name', 'email', 'password')):
-            return jsonify({'message': 'Name, email, and password are required!'}), 400
+            raise ValidationError('Name, email, and password are required!')
         
         name = sanitize_input(data.get('name', '').strip())
         email = sanitize_input(data.get('email', '').strip().lower())
@@ -25,13 +26,13 @@ def register():
         
         # Validation
         if not name or len(name) < 2:
-            return jsonify({'message': 'Name must be at least 2 characters long!'}), 400
+            raise ValidationError('Name must be at least 2 characters long!')
         
         if not email or '@' not in email:
-            return jsonify({'message': 'Valid email is required!'}), 400
+            raise ValidationError('Valid email is required!')
         
         if not password or len(password) < 6:
-            return jsonify({'message': 'Password must be at least 6 characters long!'}), 400
+            raise ValidationError('Password must be at least 6 characters long!')
         
         # Connect to MongoDB
         client = MongoClient(Config.MONGO_URI)
@@ -41,7 +42,8 @@ def register():
         # Check if user already exists
         existing_user = user_model.find_by_email(email)
         if existing_user:
-            return jsonify({'message': 'User with this email already exists!'}), 409
+            client.close()
+            raise AppError('User with this email already exists!', status_code=409)
         
         # Hash the password
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
@@ -57,18 +59,23 @@ def register():
         
         client.close()
         
-        return jsonify({
-            'message': 'User registered successfully!',
-            'token': token,
-            'user': {
-                'id': user_id,
-                'name': name,
-                'email': email
-            }
-        }), 201
+        return success_response(
+            data={
+                'token': token,
+                'user': {
+                    'id': user_id,
+                    'name': name,
+                    'email': email
+                }
+            },
+            message='User registered successfully!',
+            status_code=201
+        )
         
+    except (ValidationError, AppError) as e:
+        return handle_error(e)
     except Exception as e:
-        return jsonify({'message': f'Registration failed: {str(e)}'}), 500
+        return handle_error(e)
 
 
 @auth_bp.route('/login', methods=['POST'])
@@ -78,17 +85,17 @@ def login():
         
         # Validate required fields
         if not data or not all(k in data for k in ('email', 'password')):
-            return jsonify({'message': 'Email and password are required!'}), 400
+            raise ValidationError('Email and password are required!')
         
         email = sanitize_input(data.get('email', '').strip().lower())
         password = data.get('password', '')
         
         # Validation
         if not email or '@' not in email:
-            return jsonify({'message': 'Valid email is required!'}), 400
+            raise ValidationError('Valid email is required!')
         
         if not password:
-            return jsonify({'message': 'Password is required!'}), 400
+            raise ValidationError('Password is required!')
         
         # Connect to MongoDB
         client = MongoClient(Config.MONGO_URI)
@@ -98,11 +105,13 @@ def login():
         # Find user by email
         user = user_model.find_by_email(email)
         if not user:
-            return jsonify({'message': 'Invalid credentials!'}), 401
+            client.close()
+            raise UnauthorizedError('Invalid credentials!')
         
         # Check password
         if not bcrypt.checkpw(password.encode('utf-8'), user['password_hash'].encode('utf-8')):
-            return jsonify({'message': 'Invalid credentials!'}), 401
+            client.close()
+            raise UnauthorizedError('Invalid credentials!')
         
         # Generate JWT token
         token = jwt.encode({
@@ -112,19 +121,23 @@ def login():
         
         client.close()
         
-        return jsonify({
-            'message': 'Login successful!',
-            'token': token,
-            'user': {
-                'id': user['_id'],
-                'name': user['name'],
-                'email': user['email'],
-                'is_premium': user.get('is_premium', False)
-            }
-        }), 200
+        return success_response(
+            data={
+                'token': token,
+                'user': {
+                    'id': user['_id'],
+                    'name': user['name'],
+                    'email': user['email'],
+                    'is_premium': user.get('is_premium', False)
+                }
+            },
+            message='Login successful!'
+        )
         
+    except (ValidationError, AppError) as e:
+        return handle_error(e)
     except Exception as e:
-        return jsonify({'message': f'Login failed: {str(e)}'}), 500
+        return handle_error(e)
 
 
 @auth_bp.route('/profile', methods=['GET'])
@@ -135,5 +148,7 @@ def profile():
         # For now, we'll just return a placeholder - the actual implementation 
         # will be in the main server file with the token_required decorator
         pass
+    except (ValidationError, AppError) as e:
+        return handle_error(e)
     except Exception as e:
-        return jsonify({'message': f'Profile retrieval failed: {str(e)}'}), 500
+        return handle_error(e)

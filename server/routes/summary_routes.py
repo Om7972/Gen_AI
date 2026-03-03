@@ -16,6 +16,7 @@ from utils.cache import cache_youtube_summary, get_cached_youtube_summary
 from utils.logger import SummarizationLogger
 from utils.error_handler import handle_error, AppError, ValidationError, NotFoundError, success_response, error_response
 from schemas.validation_schemas import YouTubeSummarySchema, validate_request_data
+from utils.limiter import limiter
 
 summary_bp = Blueprint('summary_bp', __name__)
 logger = logging.getLogger(__name__)
@@ -30,6 +31,7 @@ def allowed_file(filename):
 
 
 @summary_bp.route('/youtube', methods=['POST'])
+@limiter.limit("5 per minute")
 @token_required
 def summarize_youtube(current_user):
     start_time = time.time()
@@ -144,8 +146,10 @@ def summarize_youtube(current_user):
 
 
 @summary_bp.route('/pdf', methods=['POST'])
+@limiter.limit("5 per minute")
 @token_required
 def summarize_pdf(current_user):
+    start_time = time.time()
     try:
         # Check if user can create another summary
         client = MongoClient(Config.MONGO_URI)
@@ -154,21 +158,41 @@ def summarize_pdf(current_user):
         user_model = User(db)
         
         if not user_model.can_create_summary(current_user['_id']):
-            return jsonify({'message': 'Daily summary limit reached. Upgrade to premium for unlimited summaries.'}), 429
+            client.close()
+            sum_logger.log_rate_limit_warning(
+                current_user['_id'],
+                user_model.find_by_id(current_user['_id']).get('summaries_count_today', 0),
+                user_model.find_by_id(current_user['_id']).get('daily_limit', 5)
+            )
+            raise AppError('Daily summary limit reached. Upgrade to premium for unlimited summaries.', status_code=429)
         
         # Check if the POST request has the file part
         if 'file' not in request.files:
-            return jsonify({'message': 'No file part in the request!'}), 400
+            client.close()
+            raise ValidationError('No file part in the request!')
 
         file = request.files['file']
 
         # If user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
-            return jsonify({'message': 'No file selected!'}), 400
+            client.close()
+            raise ValidationError('No file selected!')
 
         if file and allowed_file(file.filename):
+            
+            file.seek(0, os.SEEK_END)
+            file_length = file.tell()
+            file.seek(0, 0)
+            
+            if file_length > Config.MAX_FILE_SIZE:
+                client.close()
+                raise ValidationError('File size exceeds the 10MB limit')
+            
             filename = secure_filename(file.filename)
+            
+            # Log summarization start
+            sum_logger.log_summarization_start(current_user['_id'], 'pdf', filename)
             
             # Save file temporarily
             temp_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'temp_uploads')
@@ -181,7 +205,7 @@ def summarize_pdf(current_user):
                 result = process_pdf_file(file_path)
                 
                 if 'error' in result:
-                    return jsonify({'message': result['error']}), 400
+                    raise AppError(result['error'], status_code=400)
                 
                 # Create summary record in database
                 summary_model = Summary(db)
@@ -198,23 +222,39 @@ def summarize_pdf(current_user):
                 
                 client.close()
                 
-                return jsonify({
-                    'message': 'Summary generated successfully!',
-                    'summary': result['summary'],
-                    'summary_id': summary_id,
-                    'word_count': calculate_word_count(result['summary']),
-                    'reading_time': calculate_reading_time(result['summary'])
-                }), 200
+                # Log completion
+                duration = time.time() - start_time
+                sum_logger.log_summarization_complete(
+                    current_user['_id'],
+                    'pdf',
+                    duration,
+                    calculate_word_count(result['summary'])
+                )
+                
+                return success_response(
+                    data={
+                        'summary': result['summary'],
+                        'summary_id': summary_id,
+                        'word_count': calculate_word_count(result['summary']),
+                        'reading_time': calculate_reading_time(result['summary'])
+                    },
+                    message='Summary generated successfully!',
+                    meta={'duration_seconds': round(duration, 2)}
+                )
                 
             finally:
                 # Clean up temporary file
                 if os.path.exists(file_path):
                     os.remove(file_path)
         else:
-            return jsonify({'message': 'Invalid file type. Only PDF files are allowed.'}), 400
+            client.close()
+            raise ValidationError('Invalid file type. Only PDF files are allowed.')
 
+    except (ValidationError, AppError) as e:
+        return handle_error(e)
     except Exception as e:
-        return jsonify({'message': f'Error processing PDF: {str(e)}'}), 500
+        sum_logger.log_error('pdf_summarization', e, current_user['_id'])
+        return handle_error(e)
 
 
 @summary_bp.route('/history', methods=['GET'])
@@ -232,13 +272,16 @@ def get_history(current_user):
         
         client.close()
         
-        return jsonify({
-            'message': 'History retrieved successfully!',
-            'summaries': summaries
-        }), 200
+        return success_response(
+            data={'summaries': summaries},
+            message='History retrieved successfully!'
+        )
         
+    except (ValidationError, AppError) as e:
+        return handle_error(e)
     except Exception as e:
-        return jsonify({'message': f'Error retrieving history: {str(e)}'}), 500
+        sum_logger.log_error('get_history', e, current_user['_id'])
+        return handle_error(e)
 
 
 @summary_bp.route('/<summary_id>', methods=['DELETE'])
@@ -254,9 +297,12 @@ def delete_summary(current_user, summary_id):
         client.close()
         
         if success:
-            return jsonify({'message': 'Summary deleted successfully!'}), 200
+            return success_response(message='Summary deleted successfully!')
         else:
-            return jsonify({'message': 'Summary not found or unauthorized!'}), 404
+            raise NotFoundError('Summary not found or unauthorized!')
             
+    except (ValidationError, AppError) as e:
+        return handle_error(e)
     except Exception as e:
-        return jsonify({'message': f'Error deleting summary: {str(e)}'}), 500
+        sum_logger.log_error('delete_summary', e, current_user['_id'])
+        return handle_error(e)
