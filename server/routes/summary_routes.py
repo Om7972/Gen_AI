@@ -5,13 +5,15 @@ import time
 import logging
 from config import Config
 from models.summary_model import Summary
+from models.user_model import User
 from middleware.jwt_middleware import token_required
 from services.youtube_service import process_youtube_video
 from services.pdf_service import process_pdf_file
 from utils.text_cleaner import sanitize_input, calculate_word_count, calculate_reading_time
 from pymongo import MongoClient
 import tempfile
-from utils.cache import cache_youtube_summary, get_cached_youtube_summary, SummarizationLogger
+from utils.cache import cache_youtube_summary, get_cached_youtube_summary
+from utils.logger import SummarizationLogger
 from utils.error_handler import handle_error, AppError, ValidationError, NotFoundError, success_response, error_response
 from schemas.validation_schemas import YouTubeSummarySchema, validate_request_data
 
