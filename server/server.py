@@ -76,8 +76,7 @@ def create_app():
                 'name': fresh_user['name'],
                 'email': fresh_user['email'],
                 'is_premium': fresh_user.get('is_premium', False),
-                'daily_limit': fresh_user.get('daily_limit', 5),
-                'summaries_count_today': fresh_user.get('summaries_count_today', 0),
+                'daily_usage_count': fresh_user.get('daily_usage_count', 0),
                 'created_at': fresh_user['created_at']
             }
             

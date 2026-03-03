@@ -26,11 +26,11 @@ class User:
             'name': name,
             'email': email,
             'password_hash': password_hash,
-            'created_at': datetime.utcnow(),
+            'role': 'user',
             'is_premium': False,
-            'daily_limit': 5,  # Free users get 5 summaries per day
-            'summaries_count_today': 0,
-            'last_summary_reset': datetime.utcnow()
+            'daily_usage_count': 0,
+            'last_usage_reset': datetime.utcnow(),
+            'created_at': datetime.utcnow()
         }
         result = self.collection.insert_one(user_data)
         return str(result.inserted_id)
@@ -57,25 +57,25 @@ class User:
             from datetime import datetime
             now = datetime.utcnow()
             
-            # Use atomic findAndModify for race condition safety
+        # Use atomic findAndModify for race condition safety
             result = self.collection.find_one_and_update(
                 {'_id': ObjectId(user_id)},
                 [
                     {
                         '$set': {
-                            'summaries_count_today': {
+                            'daily_usage_count': {
                                 '$cond': [
                                     {
                                         '$gte': [
-                                            {'$toDate': '$last_summary_reset'},
+                                            {'$toDate': '$last_usage_reset'},
                                             {'$dateTrunc': {'date': '$$NOW', 'unit': 'day'}}
                                         ]
                                     },
-                                    {'$add': ['$summaries_count_today', 1]},
+                                    {'$add': ['$daily_usage_count', 1]},
                                     1
                                 ]
                             },
-                            'last_summary_reset': '$$NOW'
+                            'last_usage_reset': '$$NOW'
                         }
                     }
                 ],
@@ -90,7 +90,7 @@ class User:
             try:
                 self.collection.update_one(
                     {'_id': ObjectId(user_id)},
-                    {'$inc': {'summaries_count_today': 1}}
+                    {'$inc': {'daily_usage_count': 1}}
                 )
                 return True
             except Exception as fallback_error:
@@ -108,11 +108,11 @@ class User:
             return True
         
         # Free users are limited to daily_limit summaries per day
-        summaries_count = user_doc.get('summaries_count_today', 0)
-        daily_limit = user_doc.get('daily_limit', 5)
+        summaries_count = user_doc.get('daily_usage_count', 0)
+        daily_limit = 5  # Free tier default limit
         
         # Check if we need to reset the counter (new day)
-        last_reset = user_doc.get('last_summary_reset', datetime.utcnow())
+        last_reset = user_doc.get('last_usage_reset', datetime.utcnow())
         if (datetime.utcnow() - last_reset).days >= 1:
             # Counter should be reset, so user can create summary
             return True

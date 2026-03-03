@@ -53,10 +53,8 @@ class Summary:
                 video_id = self._extract_video_id(original_source)
             
             # Calculate lengths
-            text_length = len(extracted_text) if extracted_text else 0
-            summary_length = len(summary_text) if summary_text else 0
-            word_count = len(summary_text.split()) if summary_text else 0
-            reading_time = round(word_count / 200) if summary_text else 0
+            extracted_text_length = len(extracted_text) if extracted_text else 0
+            summary_word_count = len(summary_text.split()) if summary_text else 0
             
             # Create content hash for duplicate detection
             content_hash = hashlib.md5(
@@ -69,13 +67,10 @@ class Summary:
                 'original_source': original_source,
                 'video_id': video_id,  # Null for PDFs
                 'extracted_text': extracted_text,
+                'extracted_text_length': extracted_text_length,
                 'summary_text': summary_text,
-                'created_at': datetime.utcnow(),
-                'word_count': word_count,
-                'reading_time': reading_time,
-                'text_length': text_length,
-                'summary_length': summary_length,
-                'content_hash': content_hash
+                'summary_word_count': summary_word_count,
+                'created_at': datetime.utcnow()
             }
             result = self.collection.insert_one(summary_data)
             logger.info(f"Summary created: {result.inserted_id} for user {user_id}")
@@ -84,12 +79,27 @@ class Summary:
             logger.error(f"Error creating summary: {str(e)}")
             raise
     
-    def get_user_summaries(self, user_id, summary_type=None):
+    def get_user_summaries(self, user_id, summary_type=None, page=1, limit=50):
         query = {'user_id': user_id}
         if summary_type:
             query['type'] = summary_type
+            
+        skip = (page - 1) * limit
+        
+        # Projection to limit fields returned
+        projection = {
+            'user_id': 1,
+            'type': 1,
+            'video_id': 1,
+            'original_source': 1,
+            'summary_text': 1,
+            'summary_word_count': 1,
+            'extracted_text_length': 1,
+            'created_at': 1
+        }
+        
         # Use index on user_id + type + created_at for optimal performance
-        summaries = list(self.collection.find(query).sort('created_at', -1))
+        summaries = list(self.collection.find(query, projection).sort('created_at', -1).skip(skip).limit(limit))
         for summary in summaries:
             summary['_id'] = str(summary['_id'])
             summary['user_id'] = str(summary['user_id'])

@@ -59,8 +59,8 @@ def summarize_youtube(current_user):
             client.close()
             sum_logger.log_rate_limit_warning(
                 current_user['_id'],
-                user_model.find_by_id(current_user['_id']).get('summaries_count_today', 0),
-                user_model.find_by_id(current_user['_id']).get('daily_limit', 5)
+                user_model.find_by_id(current_user['_id']).get('daily_usage_count', 0),
+                5  # Fixed default daily limit
             )
             raise AppError(
                 'Daily summary limit reached. Upgrade to premium for unlimited summaries.',
@@ -161,8 +161,8 @@ def summarize_pdf(current_user):
             client.close()
             sum_logger.log_rate_limit_warning(
                 current_user['_id'],
-                user_model.find_by_id(current_user['_id']).get('summaries_count_today', 0),
-                user_model.find_by_id(current_user['_id']).get('daily_limit', 5)
+                user_model.find_by_id(current_user['_id']).get('daily_usage_count', 0),
+                5  # Fixed default daily limit
             )
             raise AppError('Daily summary limit reached. Upgrade to premium for unlimited summaries.', status_code=429)
         
@@ -265,10 +265,12 @@ def get_history(current_user):
         db = client.pdf_summarizer
         summary_model = Summary(db)
         
-        # Get optional type filter
+        # Get optional type filter and pagination params
         summary_type = request.args.get('type')
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 50))
         
-        summaries = summary_model.get_user_summaries(current_user['_id'], summary_type)
+        summaries = summary_model.get_user_summaries(current_user['_id'], summary_type, page, limit)
         
         client.close()
         
