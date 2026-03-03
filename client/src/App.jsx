@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import DashboardEnhanced from './pages/DashboardEnhanced';
 import History from './pages/History';
+import UserSettings from './pages/UserSettings';
 
 import './App.css';
 
@@ -63,6 +64,11 @@ function AppContent() {
         <Route path="/history" element={
           <ProtectedRoute>
             <History />
+          </ProtectedRoute>
+        } />
+        <Route path="/settings" element={
+          <ProtectedRoute>
+            <UserSettings />
           </ProtectedRoute>
         } />
       </Routes>

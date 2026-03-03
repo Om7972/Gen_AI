@@ -8,6 +8,7 @@ const Navbar = () => {
   const { theme, toggleTheme, isDark } = useTheme();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -75,29 +76,62 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-3">
             {isAuthenticated ? (
               <>
-                <Link
-                  to="/dashboard"
-                  className="px-6 py-2.5 rounded-xl btn-gradient font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  Dashboard
-                </Link>
-                
-                {/* User Info Badge */}
-                <div className="flex items-center px-3 py-1.5 rounded-xl bg-gradient-to-r from-primary-500/10 to-secondary-500/10 border border-primary-200 dark:border-primary-700">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-600 to-secondary-600 flex items-center justify-center text-white font-semibold text-xs">
-                    {user?.name?.charAt(0).toUpperCase() || 'U'}
-                  </div>
-                  <span className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-200">
-                    {user?.name || 'User'}
-                  </span>
-                </div>
+                <div className="relative">
+                  <button
+                    onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                    className="flex items-center px-3 py-1.5 rounded-xl bg-gradient-to-r from-primary-500/10 to-secondary-500/10 border border-primary-200 dark:border-primary-700 hover:border-primary-400 dark:hover:border-primary-500 transition-colors cursor-pointer"
+                  >
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-600 to-secondary-600 flex items-center justify-center text-white font-semibold text-xs">
+                      {user?.name?.charAt(0).toUpperCase() || 'U'}
+                    </div>
+                    <span className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                      {user?.name || 'User'}
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ml-1 text-gray-500 transition-transform ${profileDropdownOpen ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
 
-                <button
-                  onClick={handleLogout}
-                  className="px-4 py-2 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium transition-all duration-300"
-                >
-                  Logout
-                </button>
+                  {/* Dropdown Menu */}
+                  {profileDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 glass-card border-t border-gray-200 dark:border-gray-700 py-2 shadow-xl z-50 animate-slide-down">
+                      <div className="px-4 py-2 border-b border-gray-100 dark:border-gray-700">
+                        <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{user?.name || 'User'}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email}</p>
+                      </div>
+                      <Link
+                        to="/dashboard"
+                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
+                        onClick={() => setProfileDropdownOpen(false)}
+                      >
+                        Dashboard
+                      </Link>
+                      <Link
+                        to="/history"
+                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
+                        onClick={() => setProfileDropdownOpen(false)}
+                      >
+                        Summary History
+                      </Link>
+                      <Link
+                        to="/settings"
+                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
+                        onClick={() => setProfileDropdownOpen(false)}
+                      >
+                        Settings
+                      </Link>
+                      <button
+                        onClick={() => {
+                          setProfileDropdownOpen(false);
+                          handleLogout();
+                        }}
+                        className="block w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
               </>
             ) : (
               <>
@@ -240,7 +274,7 @@ const Navbar = () => {
             >
               Testimonials
             </button>
-            
+
             <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
               {isAuthenticated ? (
                 <div className="space-y-3">
@@ -250,9 +284,21 @@ const Navbar = () => {
                   >
                     Dashboard
                   </Link>
+                  <Link
+                    to="/history"
+                    className="block w-full px-4 py-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-primary-900/20 font-medium text-left transition-colors"
+                  >
+                    History
+                  </Link>
+                  <Link
+                    to="/settings"
+                    className="block w-full px-4 py-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-primary-900/20 font-medium text-left transition-colors"
+                  >
+                    Settings
+                  </Link>
                   <button
                     onClick={handleLogout}
-                    className="block w-full px-4 py-3 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium text-left"
+                    className="block w-full px-4 py-3 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium text-left transition-colors"
                   >
                     Logout
                   </button>
