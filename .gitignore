@@ -1,0 +1,78 @@
+# ========================
+# Python / Flask Backend
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pdb
+.venv/
+venv/
+env/
+.env
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Flask / Server logs
+*.log
+summarizer.log
+
+# Temp uploads & downloads
+server/temp_uploads/
+server/temp_downloads/
+server/uploads/
+
+# Audio/video files downloaded during processing
+*.m4a
+*.mp3
+*.mp4
+*.webm
+*.wav
+
+# YouTube metadata
+*.info.json
+
+# Transcript cache
+server/transcript.json
+
+# ========================
+# Node / React Frontend
+# ========================
+node_modules/
+client/node_modules/
+client/dist/
+client/.env
+
+# Build output
+*.tsbuildinfo
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========================
+# OS Files
+# ========================
+*.tmp
+*.bak
+*.orig
+
+# ========================
+# Packages
+# ========================
+package-lock.json
+
+# ========================
+# Misc
+# ========================
+.gemini/
