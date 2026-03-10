@@ -36,8 +36,9 @@ const History = () => {
     try {
       setLoading(true);
       const response = await summaryAPI.getHistory();
-      setSummaries(response.data.summaries);
-      setFilteredSummaries(response.data.summaries);
+      const summariesData = response.data.data ? response.data.data.summaries : (response.data.summaries || []);
+      setSummaries(summariesData);
+      setFilteredSummaries(summariesData);
     } catch (error) {
       console.error('Error fetching summaries:', error);
       toast.error('Failed to fetch summaries');
@@ -118,7 +119,7 @@ const History = () => {
                   <option value="pdf">PDF</option>
                 </select>
               </div>
-              
+
               <div className="flex-1">
                 <label htmlFor="search" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Search
@@ -140,7 +141,7 @@ const History = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-gradient-to-r from-primary-500/10 to-secondary-500/10 border border-primary-200 dark:border-primary-700">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary-600" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />

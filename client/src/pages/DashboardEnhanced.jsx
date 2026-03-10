@@ -11,14 +11,14 @@ import { useAuth } from '../context/AuthContext';
 const DashboardEnhanced = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  
+
   // Tab state
   const [activeTab, setActiveTab] = useState('youtube');
-  
+
   // Summary state
   const [summaryResult, setSummaryResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  
+
   // User stats state
   const [userStats, setUserStats] = useState({
     totalSummaries: 0,
@@ -30,7 +30,7 @@ const DashboardEnhanced = () => {
     timeSaved: 0,
     isPremium: false
   });
-  
+
   // History state
   const [history, setHistory] = useState([]);
   const [filteredHistory, setFilteredHistory] = useState([]);
@@ -53,9 +53,9 @@ const DashboardEnhanced = () => {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await authAPI.getProfile();
-      const userData = response.data.user;
-      
+      const userResponse = await authAPI.getProfile();
+      const userData = userResponse.data.data ? userResponse.data.data.user : userResponse.data.user;
+
       setUserStats(prev => ({
         ...prev,
         summariesToday: userData.summaries_count_today || 0,
@@ -70,18 +70,18 @@ const DashboardEnhanced = () => {
   const fetchHistory = async () => {
     setHistoryLoading(true);
     try {
-      const response = await summaryAPI.getHistory();
-      const summaries = response.data.summaries || [];
-      
+      const histResponse = await summaryAPI.getHistory();
+      const summaries = histResponse.data.data ? histResponse.data.data.summaries : (histResponse.data.summaries || []);
+
       setHistory(summaries);
-      
+
       // Calculate analytics
       const youtubeSummaries = summaries.filter(s => s.type === 'youtube').length;
       const pdfSummaries = summaries.filter(s => s.type === 'pdf').length;
       const totalWords = summaries.reduce((acc, s) => acc + (s.word_count || 0), 0);
       const avgWords = summaries.length > 0 ? Math.round(totalWords / summaries.length) : 0;
       const timeSaved = Math.round(totalWords / 200);
-      
+
       setUserStats(prev => ({
         ...prev,
         totalSummaries: summaries.length,
@@ -100,11 +100,11 @@ const DashboardEnhanced = () => {
 
   const filterHistory = () => {
     let filtered = [...history];
-    
+
     if (historyFilter !== 'all') {
       filtered = filtered.filter(summary => summary.type === historyFilter);
     }
-    
+
     if (historySearch) {
       const searchLower = historySearch.toLowerCase();
       filtered = filtered.filter(summary =>
@@ -112,18 +112,18 @@ const DashboardEnhanced = () => {
         summary.summary_text?.toLowerCase().includes(searchLower)
       );
     }
-    
+
     filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     setFilteredHistory(filtered);
   };
 
   const handleDeleteSummary = async (id) => {
     if (!window.confirm('Are you sure you want to delete this summary?')) return;
-    
+
     try {
       await summaryAPI.deleteSummary(id);
       toast.success('Summary deleted successfully!');
-      
+
       const updatedHistory = history.filter(s => s._id !== id && s.id !== id);
       setHistory(updatedHistory);
     } catch (error) {
@@ -138,10 +138,10 @@ const DashboardEnhanced = () => {
 
   const handleSummarizeYouTube = async (data) => {
     setLoading(true);
-    
+
     try {
       const response = await summaryAPI.summarizeYouTube({ video_link: data.video_link });
-      setSummaryResult(response.data);
+      setSummaryResult(response.data.data || response.data);
       toast.success('✨ Summary generated successfully!');
       fetchHistory(); // Refresh stats
     } catch (error) {
@@ -153,13 +153,13 @@ const DashboardEnhanced = () => {
 
   const handleSummarizePDF = async (data) => {
     setLoading(true);
-    
+
     const formData = new FormData();
     formData.append('file', data.pdf_file);
-    
+
     try {
       const response = await summaryAPI.summarizePDF(formData);
-      setSummaryResult(response.data);
+      setSummaryResult(response.data.data || response.data);
       toast.success('✨ Summary generated successfully!');
       fetchHistory(); // Refresh stats
     } catch (error) {
@@ -177,7 +177,7 @@ const DashboardEnhanced = () => {
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-8">
-        
+
         {/* Welcome Header with Usage Stats */}
         <div className="glass-card rounded-3xl p-8 animate-fade-in">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
@@ -189,7 +189,7 @@ const DashboardEnhanced = () => {
                 You've generated <span className="font-bold text-primary-600">{userStats.totalSummaries}</span> summaries so far
               </p>
             </div>
-            
+
             <div className="flex items-center space-x-4 bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20 px-6 py-4 rounded-2xl">
               <div className="text-center">
                 <div className="text-3xl font-bold text-primary-600">{userStats.summariesToday}</div>
@@ -214,11 +214,10 @@ const DashboardEnhanced = () => {
               </div>
               <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <div
-                  className={`h-full transition-all duration-500 ease-out rounded-full ${
-                    usagePercentage > 80
+                  className={`h-full transition-all duration-500 ease-out rounded-full ${usagePercentage > 80
                       ? 'bg-gradient-to-r from-red-500 to-orange-500'
                       : 'bg-gradient-to-r from-primary-600 to-secondary-600'
-                  }`}
+                    }`}
                   style={{ width: `${usagePercentage}%` }}
                 ></div>
               </div>
@@ -312,11 +311,10 @@ const DashboardEnhanced = () => {
               <div className="flex space-x-2 mb-6">
                 <button
                   onClick={() => setActiveTab('youtube')}
-                  className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                    activeTab === 'youtube'
+                  className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${activeTab === 'youtube'
                       ? 'bg-gradient-to-r from-primary-600 to-secondary-600 text-white shadow-lg scale-105'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
+                    }`}
                 >
                   <span className="flex items-center justify-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -327,11 +325,10 @@ const DashboardEnhanced = () => {
                 </button>
                 <button
                   onClick={() => setActiveTab('pdf')}
-                  className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                    activeTab === 'pdf'
+                  className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${activeTab === 'pdf'
                       ? 'bg-gradient-to-r from-primary-600 to-secondary-600 text-white shadow-lg scale-105'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
+                    }`}
                 >
                   <span className="flex items-center justify-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -343,12 +340,12 @@ const DashboardEnhanced = () => {
               </div>
 
               {activeTab === 'youtube' ? (
-                <EnhancedYoutubeInput 
+                <EnhancedYoutubeInput
                   onSummarize={handleSummarizeYouTube}
                   loading={loading}
                 />
               ) : (
-                <EnhancedPDFInput 
+                <EnhancedPDFInput
                   onSummarize={handleSummarizePDF}
                   loading={loading}
                 />
@@ -400,7 +397,7 @@ const DashboardEnhanced = () => {
               </svg>
               Summary History
             </h2>
-            
+
             {/* Filters */}
             <div className="flex flex-col sm:flex-row gap-3">
               {/* Search */}
@@ -416,7 +413,7 @@ const DashboardEnhanced = () => {
                   <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
                 </svg>
               </div>
-              
+
               {/* Type Filter */}
               <select
                 value={historyFilter}
@@ -463,11 +460,10 @@ const DashboardEnhanced = () => {
                   filteredHistory.map((summary, index) => (
                     <tr key={index} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                       <td className="py-3 px-4">
-                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                          summary.type === 'youtube'
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${summary.type === 'youtube'
                             ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
                             : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                        }`}>
+                          }`}>
                           {summary.type === 'youtube' ? '▶ YouTube' : '📄 PDF'}
                         </span>
                       </td>
@@ -531,7 +527,7 @@ const DashboardEnhanced = () => {
                   </svg>
                 </button>
               </div>
-              
+
               <EnhancedSummaryDisplay
                 summary={selectedSummary}
                 type={selectedSummary.type}

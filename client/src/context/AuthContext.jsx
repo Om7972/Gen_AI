@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
         setToken(storedToken);
         try {
           const response = await authAPI.getProfile();
-          setUser(response.data.user);
+          setUser(response.data.data ? response.data.data.user : response.data.user);
         } catch (error) {
           console.error('Failed to fetch user profile:', error);
           localStorage.removeItem('token');
@@ -40,17 +40,17 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await authAPI.login({ email, password });
-      const { token: newToken, user: userData } = response.data;
-      
+      const { token: newToken, user: userData } = response.data.data || response.data;
+
       localStorage.setItem('token', newToken);
       setToken(newToken);
       setUser(userData);
-      
+
       return { success: true };
     } catch (error) {
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Login failed' 
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Login failed'
       };
     }
   };
@@ -58,17 +58,17 @@ export const AuthProvider = ({ children }) => {
   const register = async (name, email, password) => {
     try {
       const response = await authAPI.register({ name, email, password });
-      const { token: newToken, user: userData } = response.data;
-      
+      const { token: newToken, user: userData } = response.data.data || response.data;
+
       localStorage.setItem('token', newToken);
       setToken(newToken);
       setUser(userData);
-      
+
       return { success: true };
     } catch (error) {
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Registration failed' 
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Registration failed'
       };
     }
   };

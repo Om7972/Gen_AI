@@ -51,7 +51,7 @@ const Dashboard = () => {
 
     setLoading(true);
     setProgress(0);
-    
+
     // Simulate progress
     const progressInterval = setInterval(() => {
       setProgress(prev => {
@@ -66,10 +66,11 @@ const Dashboard = () => {
     try {
       const response = await summaryAPI.summarizeYouTube({ video_link: youtubeUrl });
       setProgress(100);
-      setSummaryResult(response.data);
+      const summaryData = response.data.data || response.data;
+      setSummaryResult(summaryData);
       toast.success('✨ Summary generated successfully!');
-      
-      setRecentSummaries(prev => [response.data, ...prev.slice(0, 2)]);
+
+      setRecentSummaries(prev => [summaryData, ...prev.slice(0, 2)]);
     } catch (error) {
       console.error('Error generating YouTube summary:', error);
       toast.error(error.response?.data?.message || 'Failed to generate summary');
@@ -96,7 +97,7 @@ const Dashboard = () => {
 
     setLoading(true);
     setProgress(0);
-    
+
     // Simulate progress
     const progressInterval = setInterval(() => {
       setProgress(prev => {
@@ -111,10 +112,11 @@ const Dashboard = () => {
     try {
       const response = await summaryAPI.summarizePDF(formData);
       setProgress(100);
-      setSummaryResult(response.data);
+      const summaryData = response.data.data || response.data;
+      setSummaryResult(summaryData);
       toast.success('✨ Summary generated successfully!');
-      
-      setRecentSummaries(prev => [response.data, ...prev.slice(0, 2)]);
+
+      setRecentSummaries(prev => [summaryData, ...prev.slice(0, 2)]);
     } catch (error) {
       console.error('Error generating PDF summary:', error);
       toast.error(error.response?.data?.message || 'Failed to generate summary');
@@ -213,11 +215,10 @@ const Dashboard = () => {
           <div className="glass-card rounded-2xl p-2 inline-flex mx-auto">
             <button
               onClick={() => setActiveTab('youtube')}
-              className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                activeTab === 'youtube'
+              className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${activeTab === 'youtube'
                   ? 'bg-gradient-to-r from-primary-600 to-secondary-600 text-white shadow-lg scale-105'
                   : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
-              }`}
+                }`}
             >
               <span className="flex items-center space-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -228,11 +229,10 @@ const Dashboard = () => {
             </button>
             <button
               onClick={() => setActiveTab('pdf')}
-              className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                activeTab === 'pdf'
+              className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${activeTab === 'pdf'
                   ? 'bg-gradient-to-r from-primary-600 to-secondary-600 text-white shadow-lg scale-105'
                   : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
-              }`}
+                }`}
             >
               <span className="flex items-center space-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -252,19 +252,19 @@ const Dashboard = () => {
               <form onSubmit={handleSubmit}>
                 {activeTab === 'youtube' ? (
                   <div className="space-y-6">
-                    <YoutubeInput 
+                    <YoutubeInput
                       value={youtubeUrl}
                       onUrlChange={handleUrlChange}
                       disabled={loading}
                     />
-                    
+
                     {/* Video Preview */}
                     {videoInfo && (
                       <div className="glass-card rounded-2xl p-4 animate-fade-in">
                         <div className="relative aspect-video rounded-xl overflow-hidden mb-4 bg-gray-900">
-                          <img 
-                            src={videoInfo.thumbnail} 
-                            alt="Video thumbnail" 
+                          <img
+                            src={videoInfo.thumbnail}
+                            alt="Video thumbnail"
                             className="w-full h-full object-cover"
                             onError={(e) => {
                               e.target.src = 'https://via.placeholder.com/640x360?text=Video+Preview';
@@ -293,11 +293,10 @@ const Dashboard = () => {
                             key={length}
                             type="button"
                             onClick={() => setSummaryLength(length)}
-                            className={`px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                              summaryLength === length
+                            className={`px-4 py-3 rounded-xl font-semibold transition-all duration-300 ${summaryLength === length
                                 ? 'bg-gradient-to-r from-primary-600 to-secondary-600 text-white shadow-lg scale-105'
                                 : 'border-2 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-primary-400'
-                            }`}
+                              }`}
                           >
                             {length.charAt(0).toUpperCase() + length.slice(1)}
                           </button>
@@ -313,7 +312,7 @@ const Dashboard = () => {
                           <span className="font-semibold text-primary-600">{progress}%</span>
                         </div>
                         <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                          <div 
+                          <div
                             className="h-full bg-gradient-to-r from-primary-600 via-purple-600 to-secondary-600 transition-all duration-500 ease-out rounded-full"
                             style={{ width: `${progress}%` }}
                           ></div>
@@ -349,11 +348,11 @@ const Dashboard = () => {
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    <UploadPDF 
+                    <UploadPDF
                       onFileSelect={handleFileSelect}
                       disabled={loading}
                     />
-                    
+
                     {/* File Preview */}
                     {pdfFile && (
                       <div className="glass-card rounded-2xl p-6 animate-fade-in">
@@ -391,7 +390,7 @@ const Dashboard = () => {
                           <span className="font-semibold text-primary-600">{progress}%</span>
                         </div>
                         <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                          <div 
+                          <div
                             className="h-full bg-gradient-to-r from-primary-600 via-purple-600 to-secondary-600 transition-all duration-500 ease-out rounded-full"
                             style={{ width: `${progress}%` }}
                           ></div>
@@ -446,8 +445,8 @@ const Dashboard = () => {
                       _id: `recent-${index}`
                     }}
                     onCopy={handleCopySummary}
-                    onDelete={() => {}}
-                    onViewFull={() => {}}
+                    onDelete={() => { }}
+                    onViewFull={() => { }}
                   />
                 ))}
               </div>
@@ -463,7 +462,7 @@ const Dashboard = () => {
                 </svg>
                 Summary Result
               </h2>
-              
+
               {loading ? (
                 <SkeletonSummary />
               ) : summaryResult ? (
@@ -520,16 +519,16 @@ const Dashboard = () => {
                         <h3 className="font-bold text-gray-900 dark:text-white">
                           Summary
                         </h3>
-                        <svg 
-                          xmlns="http://www.w3.org/2000/svg" 
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
                           className={`h-5 w-5 text-gray-500 transform transition-transform duration-300 ${expandedSection ? 'rotate-180' : ''}`}
-                          viewBox="0 0 20 20" 
+                          viewBox="0 0 20 20"
                           fill="currentColor"
                         >
                           <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                         </svg>
                       </button>
-                      
+
                       {expandedSection && (
                         <div className="prose dark:prose-invert max-w-none animate-slide-up">
                           <p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">
@@ -539,7 +538,7 @@ const Dashboard = () => {
                       )}
                     </div>
                   </div>
-                  
+
                   {/* Action Buttons - Copy & Download */}
                   <div className="grid grid-cols-2 gap-3">
                     <button
